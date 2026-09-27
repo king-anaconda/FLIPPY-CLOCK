@@ -1,7 +1,7 @@
-const GIF_PRESETS = [{'CAR','https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExd29xN2M5cGl5aHRmM2gxNjdnMm5zOXZwOHRxZTFkMmZkajc5MG9iayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3xoal3NeaZKX243CvH/giphy.gif'},
-                     {'STAR','https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGM0bndwODZ0cGdpc2VoeG83MnVjeTVlaHdxZmc4dmFxNGVwMHk1ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cCCWygFWkpChuiPlWi/giphy.gif'},
-                     {'COZY','https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGthOHkwZmZrZGcxb21xenY3cWt5aWNzeWRydTdoZ2NpbjJiZTNwYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2bICILGf7ps51ZYJ6l/giphy.gif'},
-                     {'HACK','https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnp6cGZqODgwdmMycXRwcGhwc2MzNzRubXZoejZhb3N6OWw2eGc1aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/A06UFEx8jxEwU/giphy.gif'}
+const GIF_PRESETS = [{name:'CAR',url:'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDdwYzR6NWp1MDI1OXcwcjJueG5nYmNocDk1eXc0d3N2eXVzZG82NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3xoal3NeaZKX243CvH/giphy.gif'},
+                     {name:'STAR',url:'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGM0bndwODZ0cGdpc2VoeG83MnVjeTVlaHdxZmc4dmFxNGVwMHk1ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cCCWygFWkpChuiPlWi/giphy.gif'},
+                     {name:'COZY',url:'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGthOHkwZmZrZGcxb21xenY3cWt5aWNzeWRydTdoZ2NpbjJiZTNwYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2bICILGf7ps51ZYJ6l/giphy.gif'},
+                     {name:'HACK',url:'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnp6cGZqODgwdmMycXRwcGhwc2MzNzRubXZoejZhb3N6OWw2eGc1aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/A06UFEx8jxEwU/giphy.gif'}
 ];
 /* ═══════════════════════════════════════════════════════════════════════ */
 
