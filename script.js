@@ -1,12 +1,13 @@
-const GIF_PRESETS = [{name:'LUFFY',url:'https://media1.tenor.com/m/Fc5x2kfnBD8AAAAd/luffy-gear-5-luffy.gif'},
-                     {name:'EYeS',url:'https://media1.tenor.com/m/2M4gc045TVcAAAAd/gif-aestethic-wallpaper.gif'},
-                     {name:'NARUTO',url:'https://media1.tenor.com/m/TeaSSQsQgtgAAAAd/okay.gif'},
-                     {name:'COZY',url:'https://media1.tenor.com/m/r7GjcCXTnFwAAAAd/sakura.gif'},
-                     {name:'XP',url:'https://media1.tenor.com/m/W4Lfp_S4rBYAAAAd/bliss-winxp.gif'},
-                     {name:'car',url:'https://media1.tenor.com/m/ZpuUsJS-grEAAAAd/skyline.gif'},
-                     {name:'car2',url:'https://media1.tenor.com/m/NjbnEP631GQAAAAd/gtr.gif'}
+const VIDEO_PRESETS = [{name:'itachi',url:'https://motionbgs.com/media/1057/itachi-shillouette-in-front-of-the-red-moon.960x540.mp4'},
+                       {name:'goku',url:'https://motionbgs.com/media/1397/goku-ultra-instinct_2.960x540.mp4'},
+                       {name:'car',url:'https://motionbgs.com/media/7513/evening-drive-and-windmills.960x540.mp4'},
+                       {name:'rain',url:'https://motionbgs.com/media/3510/rainy-forest.960x540.mp4'},
+                       {name:'bat',url:'https://motionbgs.com/media/6193/dark-batman.960x540.mp4'},
+                       {name:'miles',url:'https://motionbgs.com/media/2001/miles-morales-in-multiverse.960x540.mp4'},
+                       {name:'minecraft',url:'https://motionbgs.com/media/1964/nature-in-minecraft.960x540.mp4'},
+                       {name:'luffy',url:'https://motionbgs.com/media/1953/monkey-d-luffy-straw-hat2.960x540.mp4'}
 ];
-/* ═══════════════════════════════════════════════════════════════════════ */
+
 
 (function () {
   'use strict';
