@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flip Clock</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Settings">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+    </svg>
+  </button>
+
+  <div class="menu" id="menu">
+    <div class="menu-row">
+      <span class="menu-label">Flat clock</span>
+      <label class="switch"><input type="checkbox" id="flatToggle" checked><i></i></label>
+    </div>
+    <div class="menu-row">
+      <span class="menu-label">Sounds</span>
+      <label class="switch"><input type="checkbox" id="soundToggle" checked><i></i></label>
+    </div>
+
+    <div class="menu-row col">
+      <div class="menu-row-head">
+        <span class="menu-label">Presets</span>
+        <button class="text-btn small" id="presetClear">None</button>
+      </div>
+      <div class="tile-grid" id="presetGrid"></div>
+    </div>
+
+    <div class="menu-row col">
+      <div class="menu-row-head">
+        <span class="menu-label">GIF wallpapers</span>
+        <span class="menu-hint">add via code</span>
+      </div>
+      <div class="tile-grid" id="gifGrid"></div>
+      <div class="menu-note">
+        Paste direct .gif URLs into <code>GIF_PRESETS</code> at the top of <code>script.js</code>.
+      </div>
+    </div>
+
+    <div class="menu-row">
+      <span class="menu-label">Upload image</span>
+      <div class="btn-group">
+        <label class="file-btn">Choose<input type="file" id="bgUpload" accept="image/*,image/gif"></label>
+        <button class="text-btn" id="bgClear">Clear</button>
+      </div>
+    </div>
+
+    <div class="menu-row col">
+      <span class="menu-label">Color</span>
+      <div class="swatches" id="swatches"></div>
+    </div>
+
+    <div class="menu-row">
+      <span class="menu-label">Time format</span>
+      <div class="seg">
+        <button data-fmt="12" class="active">12h</button>
+        <button data-fmt="24">24h</button>
+      </div>
+    </div>
+
+    <div class="menu-row col">
+      <span class="menu-label">Music</span>
+      <div class="btn-group">
+        <label class="file-btn">Load<input type="file" id="musicUpload" accept="audio/*"></label>
+        <button class="text-btn" id="musicPlay" disabled>Play</button>
+        <button class="text-btn" id="musicClear" disabled>Clear</button>
+      </div>
+      <div class="vol-row">
+        <span class="vol-label">VOL</span>
+        <input type="range" id="musicVol" min="0" max="1" step="0.01" value="0.5">
+      </div>
+      <div id="musicName" class="music-name">No track loaded</div>
+    </div>
+  </div>
+
+  <div class="status" id="status">Clock</div>
+
+  <div class="housing">
+    <div class="panel" id="panel"><div class="clock" id="clock"></div></div>
+    <div class="knob" id="knob" title="Drag in a circle"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab" data-mode="alarm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <circle cx="12" cy="13" r="7"/><path d="M12 10v3.2l2.2 1.4"/><path d="M5 5.5 6.8 3.7M19 5.5 17.2 3.7"/>
+      </svg>Alarm
+    </button>
+    <button class="tab active" data-mode="clock">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2.5"/>
+      </svg>Clock
+    </button>
+    <button class="tab" data-mode="stopwatch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <circle cx="12" cy="13.5" r="7"/><path d="M12 9.5v4"/><path d="M9.5 3.5h5"/><path d="M18.5 7 20 5.5"/>
+      </svg>Stopwatch
+    </button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
