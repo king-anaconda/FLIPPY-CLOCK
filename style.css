@@ -15,9 +15,12 @@
   --glow: 1;
 }
 
-html, body {
-  margin: 0; height: 100%; overflow: hidden;
+html {
   background: #060806;
+}
+
+body {
+  margin: 0; height: 100%; overflow: hidden;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   user-select: none; -webkit-user-select: none;
 }
