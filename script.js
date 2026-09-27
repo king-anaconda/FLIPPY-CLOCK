@@ -1,23 +1,7 @@
-/* ═══════════════════════════════════════════════════════════════════════
-   🎬  GIF WALLPAPERS — ADD YOUR OWN HERE
-   ─────────────────────────────────────────────────────────────────────
-   Paste direct .gif URLs between the brackets below. They'll appear as
-   clickable thumbnails in the "GIF wallpapers" section of the menu,
-   separate from the presets. Enables glass mode automatically.
-
-   Format (one per line):
-       { name: 'Short label', url: 'https://.../file.gif' },
-
-   Example:
-       { name: 'Matrix',  url: 'https://media.giphy.com/media/xxx/giphy.gif' },
-       { name: 'Neon',    url: 'https://example.com/neon-loop.gif' },
-
-   Leave the array empty to show the "add GIF URLs in the code" hint.
-   ═══════════════════════════════════════════════════════════════════════ */
-const GIF_PRESETS = [
-  // 👇 ADD YOUR GIFs HERE — one per line, keep the comma at the end
-  // { name: 'My GIF', url: 'https://example.com/animation.gif' },
-  // { name: 'Cool loop', url: 'https://example.com/loop.gif' },
+const GIF_PRESETS = [{'CAR','https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExd29xN2M5cGl5aHRmM2gxNjdnMm5zOXZwOHRxZTFkMmZkajc5MG9iayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3xoal3NeaZKX243CvH/giphy.gif'},
+                     {'STAR','https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGM0bndwODZ0cGdpc2VoeG83MnVjeTVlaHdxZmc4dmFxNGVwMHk1ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cCCWygFWkpChuiPlWi/giphy.gif'},
+                     {'COZY','https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGthOHkwZmZrZGcxb21xenY3cWt5aWNzeWRydTdoZ2NpbjJiZTNwYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2bICILGf7ps51ZYJ6l/giphy.gif'},
+                     {'HACK','https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnp6cGZqODgwdmMycXRwcGhwc2MzNzRubXZoejZhb3N6OWw2eGc1aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/A06UFEx8jxEwU/giphy.gif'}
 ];
 /* ═══════════════════════════════════════════════════════════════════════ */
 
