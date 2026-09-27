@@ -8,13 +8,12 @@ const VIDEO_PRESETS = [{name:'itachi',url:'https://motionbgs.com/media/1057/itac
                        {name:'luffy',url:'https://motionbgs.com/media/1953/monkey-d-luffy-straw-hat2.960x540.mp4'}
 ];
 
-
 (function () {
   'use strict';
 
   const FLIP_MS = 620;
 
-  /* ---------- Presets (solid CSS gradients, no glass) ---------- */
+  /* ---------- Gradient presets ---------- */
   const BG_PRESETS = [
     { name: 'Aurora',  css: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)' },
     { name: 'Sunset',  css: 'linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%)' },
@@ -29,7 +28,6 @@ const VIDEO_PRESETS = [{name:'itachi',url:'https://motionbgs.com/media/1057/itac
   /* ---------- Sounds ---------- */
   const sounds = {
     ctx: null, enabled: true, _lastClick: 0, _lastTick: 0,
-
     ensure() {
       if (!this.ctx) {
         const AC = window.AudioContext || window.webkitAudioContext;
@@ -186,10 +184,10 @@ const VIDEO_PRESETS = [{name:'itachi',url:'https://motionbgs.com/media/1057/itac
     fmt: 12,
     color: 'green',
     minimal: false,
-    bgType: 'none',         // 'none' | 'preset' | 'image'
+    bgType: 'none',         // 'none' | 'preset' | 'image' | 'video'
     bgValue: null,
     presetId: null,
-    gifId: null
+    videoId: null
   };
 
   const clockEl  = document.getElementById('clock');
@@ -442,35 +440,75 @@ const VIDEO_PRESETS = [{name:'itachi',url:'https://motionbgs.com/media/1057/itac
     tick(); updateStatus();
   }
 
-  /* ---------- Background system ---------- */
-  const VIGNETTE = 'radial-gradient(ellipse at 50% 45%, transparent 25%, rgba(0,0,0,.55) 100%)';
-
+  /* ============================================================
+     Background system
+       - 'none'    : default radial glow
+       - 'preset'  : CSS gradient (no glass)
+       - 'image'   : uploaded image (glass ON)
+       - 'video'   : bundled .mp4 (glass ON)
+     ============================================================ */
   function applyBackground() {
-    const b = document.body.style;
+    const body = document.body;
+    const b = body.style;
+
+    // Tear down any active video first
+    const vid = document.getElementById('bgVideo');
+    if (vid) {
+      vid.pause();
+      vid.removeAttribute('src');
+      vid.load();
+    }
+    body.classList.remove('has-bg');
 
     if (state.bgType === 'none') {
-      document.body.classList.remove('has-bg');
       b.backgroundImage = 'radial-gradient(ellipse 70% 60% at 50% 45%, rgba(60,100,70,.22), transparent 70%)';
       b.backgroundSize = 'cover';
       b.backgroundPosition = 'center';
       b.backgroundRepeat = 'no-repeat';
+
     } else if (state.bgType === 'preset') {
-      document.body.classList.remove('has-bg');
       b.backgroundImage = state.bgValue;
       b.backgroundSize = 'cover';
       b.backgroundPosition = 'center';
       b.backgroundRepeat = 'no-repeat';
+
     } else if (state.bgType === 'image') {
-      document.body.classList.add('has-bg');
-      b.backgroundImage = VIGNETTE + ', url("' + state.bgValue + '")';
+      body.classList.add('has-bg');
+      b.backgroundImage =
+        'radial-gradient(ellipse at 50% 45%, transparent 25%, rgba(0,0,0,.55) 100%), url("' +
+        state.bgValue + '")';
       b.backgroundSize = 'cover, cover';
       b.backgroundPosition = 'center, center';
       b.backgroundRepeat = 'no-repeat, no-repeat';
+
+    } else if (state.bgType === 'video') {
+      body.classList.add('has-bg');
+      b.backgroundImage = 'none';
+
+      let v = document.getElementById('bgVideo');
+      if (!v) {
+        v = document.createElement('video');
+        v.id = 'bgVideo';
+        v.muted = true;
+        v.loop = true;
+        v.autoplay = true;
+        v.playsInline = true;
+        v.setAttribute('muted', '');
+        v.setAttribute('playsinline', '');
+        document.body.prepend(v);
+      }
+      v.src = state.bgValue;
+      v.play().catch(() => {
+        const retry = () => { v.play().catch(() => {}); document.removeEventListener('click', retry); };
+        document.addEventListener('click', retry, { once: true });
+      });
     }
 
+    // Active tile highlight
     document.querySelectorAll('.tile').forEach(t => {
       t.classList.toggle('active',
-        (t.dataset.type === state.bgType && t.dataset.id === (state.presetId || state.gifId)));
+        t.dataset.type === state.bgType &&
+        t.dataset.id === (state.presetId || state.videoId));
     });
   }
 
@@ -480,16 +518,16 @@ const VIDEO_PRESETS = [{name:'itachi',url:'https://motionbgs.com/media/1057/itac
     state.bgType = 'preset';
     state.bgValue = p.css;
     state.presetId = String(idx);
-    state.gifId = null;
+    state.videoId = null;
     applyBackground();
   }
 
-  function chooseGif(idx) {
-    const g = GIF_PRESETS[idx];
-    if (!g) return;
-    state.bgType = 'image';
-    state.bgValue = g.url;
-    state.gifId = String(idx);
+  function chooseVideo(idx) {
+    const v = VIDEO_PRESETS[idx];
+    if (!v) return;
+    state.bgType = 'video';
+    state.bgValue = v.url;
+    state.videoId = String(idx);
     state.presetId = null;
     applyBackground();
   }
@@ -498,8 +536,9 @@ const VIDEO_PRESETS = [{name:'itachi',url:'https://motionbgs.com/media/1057/itac
     state.bgType = 'none';
     state.bgValue = null;
     state.presetId = null;
-    state.gifId = null;
-    document.getElementById('bgUpload').value = '';
+    state.videoId = null;
+    const up = document.getElementById('bgUpload');
+    if (up) up.value = '';
     applyBackground();
   }
 
@@ -507,7 +546,7 @@ const VIDEO_PRESETS = [{name:'itachi',url:'https://motionbgs.com/media/1057/itac
     state.bgType = 'image';
     state.bgValue = dataUrl;
     state.presetId = null;
-    state.gifId = null;
+    state.videoId = null;
     applyBackground();
   }
 
@@ -524,30 +563,44 @@ const VIDEO_PRESETS = [{name:'itachi',url:'https://motionbgs.com/media/1057/itac
     presetGrid.appendChild(btn);
   });
 
-  /* ---------- GIF tiles ---------- */
-  const gifGrid = document.getElementById('gifGrid');
-  function renderGifGrid() {
-    gifGrid.innerHTML = '';
-    if (GIF_PRESETS.length === 0) {
+  /* ---------- Video tiles ---------- */
+  const videoGrid = document.getElementById('videoGrid');
+  function renderVideoGrid() {
+    if (!videoGrid) return;
+    videoGrid.innerHTML = '';
+
+    if (VIDEO_PRESETS.length === 0) {
       const hint = document.createElement('div');
       hint.className = 'tile-empty';
       hint.style.gridColumn = 'span 4';
-      hint.innerHTML = '🎬 Empty<br><span style="color:rgba(255,180,80,.5)">Add GIF URLs in the code</span>';
-      gifGrid.appendChild(hint);
+      hint.innerHTML = '🎬 Empty<br><span style="color:rgba(255,180,80,.5)">Add .mp4 files in videos/</span>';
+      videoGrid.appendChild(hint);
       return;
     }
-    GIF_PRESETS.forEach((g, i) => {
+
+    VIDEO_PRESETS.forEach((v, i) => {
       const btn = document.createElement('button');
       btn.className = 'tile';
-      btn.dataset.type = 'image';
+      btn.dataset.type = 'video';
       btn.dataset.id = String(i);
-      btn.style.backgroundImage = 'url("' + g.url + '")';
-      btn.title = g.name || ('GIF ' + (i+1));
-      btn.addEventListener('click', () => chooseGif(i));
-      gifGrid.appendChild(btn);
+
+      const thumb = document.createElement('video');
+      thumb.src = v.url;
+      thumb.muted = true;
+      thumb.loop = true;
+      thumb.autoplay = true;
+      thumb.playsInline = true;
+      thumb.setAttribute('muted', '');
+      thumb.setAttribute('playsinline', '');
+      thumb.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
+      btn.appendChild(thumb);
+
+      btn.title = v.name || ('Video ' + (i + 1));
+      btn.addEventListener('click', () => chooseVideo(i));
+      videoGrid.appendChild(btn);
     });
   }
-  renderGifGrid();
+  renderVideoGrid();
 
   /* ---------- Swatches ---------- */
   const swatchWrap = document.getElementById('swatches');
