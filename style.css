@@ -439,3 +439,16 @@ body.has-bg::after {
   z-index: -1;
   background: radial-gradient(ellipse at 50% 45%, transparent 25%, rgba(0,0,0,.55) 100%);
 }
+
+/* Force menu hidden unless .open is on it */
+.menu:not(.open) {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(-8px) scale(.97) !important;
+}
+
+.menu.open {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateY(0) scale(1) !important;
+}
