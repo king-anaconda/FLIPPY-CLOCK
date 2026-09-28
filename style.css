@@ -632,3 +632,129 @@ body.has-bg::after {
   pointer-events: auto !important;
   transform: translateY(0) scale(1) !important;
 }
+
+/* =========================================================
+   MOBILE / LANDSCAPE RESPONSIVE
+   ========================================================= */
+
+/* Phones in landscape (or any short/wide screen) */
+@media (orientation: landscape) and (max-height: 500px) {
+  :root {
+    --card-h: min(72vh, 200px);
+  }
+
+  body {
+    gap: 10px;
+  }
+
+  .housing {
+    padding: calc(var(--card-h) * 0.13);
+  }
+
+  .panel {
+    padding: calc(var(--card-h) * 0.10) calc(var(--card-h) * 0.12);
+  }
+
+  .tabs {
+    padding: 4px;
+    gap: 2px;
+  }
+
+  .tab {
+    padding: 6px 14px;
+    font-size: 10px;
+  }
+
+  .tab svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .status {
+    top: 8px;
+    font-size: 10px;
+  }
+
+  .menu-btn {
+    top: 8px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .menu-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .menu {
+    top: 46px;
+    right: 10px;
+    width: 290px;
+    max-height: calc(100vh - 56px);
+  }
+
+  .knob {
+    right: calc(var(--card-h) * -0.08);
+  }
+}
+
+/* Very short screens (iPhone SE landscape etc.) */
+@media (orientation: landscape) and (max-height: 400px) {
+  :root {
+    --card-h: min(68vh, 170px);
+  }
+
+  .tab {
+    padding: 5px 10px;
+    font-size: 9px;
+  }
+
+  .tab svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+/* Portrait phones — keep it usable, but suggest rotating */
+@media (orientation: portrait) and (max-width: 600px) {
+  :root {
+    --card-h: min(28vh, 200px);
+  }
+
+  body::before {
+    content: '↻  rotate for the full clock';
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(200,220,200,.35);
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+}
+
+/* Kill tap highlight & hover effects on touch devices */
+@media (hover: none) {
+  .panel:hover { filter: none; }
+  .tab:hover { color: rgba(200,220,200,.45); }
+  .tab.active { color: #d6ecc9; }
+  .swatch:hover { transform: none; }
+  .tile:hover { transform: none; }
+  .file-btn:hover, .text-btn:hover { background: rgba(255,255,255,.08); }
+  .menu-btn:hover { background: rgba(30,34,30,.55); color: rgba(220,235,220,.75); }
+}
+
+/* Prevent pinch zoom + text selection lingering */
+body {
+  touch-action: manipulation;
+}
+
+/* =========================================================
+   TOUCH SUPPORT FOR THE KNOB
+   ========================================================= */
+.knob {
+  touch-action: none;
+}
