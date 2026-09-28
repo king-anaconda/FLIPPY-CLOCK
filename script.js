@@ -1,12 +1,34 @@
-const VIDEO_PRESETS = [{name:'itachi',url:'videos/itachi.webm'},
+const DESKTOP_VIDEOS = [{name:'itachi',url:'videos/itachi.webm'},
                        {name:'goku',url:'videos/goku.webm'},
                        {name:'car',url:'videos/car.webm'},
                        {name:'bat',url:'videos/bat.webm'},
                        {name:'miles',url:'videos/miles.webm'},
                        {name:'minecraft',url:'videos/minecraft.webm'},
                        {name:'luffy',url:'videos/luffy.webm'}
-
 ];
+
+const MOBILE_VIDEOS = [{name:'itachi',url:'videos/itachi.webm'},
+                       {name:'goku',url:'videos/goku.webm'},
+                       {name:'car',url:'videos/car.webm'},
+                       {name:'bat',url:'videos/bat.webm'},
+                       {name:'miles',url:'videos/miles.webm'},
+                       {name:'minecraft',url:'videos/minecraft.webm'},
+                       {name:'luffy',url:'videos/luffy.webm'}
+];
+
+/* ── Device detection ── */
+const IS_TOUCH =
+  ('ontouchstart' in window) ||
+  (navigator.maxTouchPoints > 0) ||
+  (navigator.msMaxTouchPoints > 0);
+
+const IS_MOBILE =
+  IS_TOUCH &&
+  /Android|iPhone|iPad|iPod|Mobile|Tablet|Silk/i.test(navigator.userAgent);
+
+/* Pick the list — fall back to desktop if mobile is empty */
+const VIDEO_PRESETS =
+  (IS_MOBILE && MOBILE_VIDEOS.length > 0) ? MOBILE_VIDEOS : DESKTOP_VIDEOS;
 /* ═══════════════════════════════════════════════════════════════════════ */
 
 (function () {
@@ -275,7 +297,7 @@ const VIDEO_PRESETS = [{name:'itachi',url:'videos/itachi.webm'},
   }
 
   function tick() {
-    // Auto-stop timer when it reaches zero
+    // Auto-stop timer at zero + ring
     if (state.mode === 'timer' && state.timer.running) {
       const remaining = state.timer.remaining - (Date.now() - state.timer.start);
       if (remaining <= 0) {
@@ -379,29 +401,27 @@ const VIDEO_PRESETS = [{name:'itachi',url:'videos/itachi.webm'},
     }
   });
 
-  /* ---------- Knob ---------- */
+  /* ---------- Knob (mouse + touch) ---------- */
   let drag = null;
   const CLICK_RAD = Math.PI / 12;
 
-  knobEl.addEventListener('mousedown', e => {
-    e.preventDefault();
-    e.stopPropagation();
+  function knobStart(clientX, clientY) {
     sounds.ensure();
     const r = knobEl.getBoundingClientRect();
     const cx = r.left + r.width / 2;
     const cy = r.top + r.height / 2;
     drag = {
       cx, cy,
-      lastAngle: Math.atan2(e.clientY - cy, e.clientX - cx),
+      lastAngle: Math.atan2(clientY - cy, clientX - cx),
       accumulated: 0,
       clickAccum: 0
     };
     document.body.style.cursor = 'grabbing';
-  });
+  }
 
-  document.addEventListener('mousemove', e => {
+  function knobMove(clientX, clientY) {
     if (!drag) return;
-    const angle = Math.atan2(e.clientY - drag.cy, e.clientX - drag.cx);
+    const angle = Math.atan2(clientY - drag.cy, clientX - drag.cx);
     let delta = angle - drag.lastAngle;
     if (delta >  Math.PI) delta -= 2 * Math.PI;
     if (delta < -Math.PI) delta += 2 * Math.PI;
@@ -417,9 +437,9 @@ const VIDEO_PRESETS = [{name:'itachi',url:'videos/itachi.webm'},
       drag.clickAccum -= Math.sign(drag.clickAccum) * CLICK_RAD;
     }
     applyKnob((delta / (Math.PI * 2)) * 60);
-  });
+  }
 
-  document.addEventListener('mouseup', () => {
+  function knobEnd() {
     if (!drag) return;
     const wasStopwatch = state.mode === 'stopwatch';
     const spunFar = Math.abs(drag.accumulated) > Math.PI * 1.5;
@@ -431,7 +451,34 @@ const VIDEO_PRESETS = [{name:'itachi',url:'videos/itachi.webm'},
       updateStatus();
     }
     if (state.mode === 'clock') snapClockOffset();
+  }
+
+  /* Mouse */
+  knobEl.addEventListener('mousedown', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    knobStart(e.clientX, e.clientY);
   });
+  document.addEventListener('mousemove', e => knobMove(e.clientX, e.clientY));
+  document.addEventListener('mouseup', knobEnd);
+
+  /* Touch */
+  knobEl.addEventListener('touchstart', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const t = e.touches[0];
+    knobStart(t.clientX, t.clientY);
+  }, { passive: false });
+
+  document.addEventListener('touchmove', e => {
+    if (!drag) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    knobMove(t.clientX, t.clientY);
+  }, { passive: false });
+
+  document.addEventListener('touchend', knobEnd);
+  document.addEventListener('touchcancel', knobEnd);
 
   function applyKnob(units) {
     if (state.mode === 'clock') {
