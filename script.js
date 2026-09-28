@@ -678,8 +678,9 @@ const VIDEO_PRESETS = [{name:'itachi',url:'videos/itachi.webm'},
   /* ---------- Menu ---------- */
   menuBtn.addEventListener('click', e => {
     e.stopPropagation();
-    menuEl.classList.toggle('open');
-    menuBtn.classList.toggle('open');
+    const isOpen = menuEl.classList.toggle('open');
+    menuBtn.classList.toggle('open', isOpen);
+    menuEl.toggleAttribute('hidden', !isOpen);   // ← force hidden/unhidden
     sounds.ensure(); sounds.click();
   });
   document.addEventListener('click', e => {
